@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="banner.png" alt="Moonlake" width="100%" />
+  <img src="media_kit/banner.png" alt="Moonlake" width="100%" />
 
   <h3>Build simulation environments for physical AI.</h3>
 
