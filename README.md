@@ -75,3 +75,9 @@ response = requests.post(
   &nbsp;·&nbsp;
   <a href="https://moonlakeai.mintlify.site/agent-resources">Resources for your agent</a>
 </p>
+
+## Contact Us
+- For technical questions and feature requests, please use GitHub [Issues](https://github.com/MoonlakeAI/sim-env-builder/issues).
+- For discussing with fellow users, please use our [Discord channel](https://discord.gg/ZJZB2vymnY).
+- If you wish to use Moonlake's logo, please refer to our [media kit](media_kit/).
+- For collaborations and partnerships, please contact us at [contact@moonlakeai.com](mailto:contact@moonlakeai.com).
