@@ -1,7 +1,7 @@
 <div align="center">
   <img src="media_kit/banner.png" alt="Moonlake" width="100%" />
 
-  <h3>Build simulation environments for physical AI.</h3>
+  <h3>Simulation environments for physical AI.</h3>
 
   <p>
     <a href="https://moonlakeai.mintlify.site/introduction">Documentation</a>
