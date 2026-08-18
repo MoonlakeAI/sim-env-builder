@@ -226,7 +226,8 @@ Per-check statuses and metrics land in
 `outputs/asset_checks/<asset>/report.json`.
 
 Visual inspection of asset quality is just as important as quantitative metrics.
-Add `--render preview` to also write assembled and exploded turntables for viewing.
+Add `--render preview` to preview stills of rendered turntables and `--render loop`
+to output the full assembled + exploded turntables for viewing.
 Requires Blender accessible via your CLI to use.
 
 What's equally important is what's NOT included in these static checks:
