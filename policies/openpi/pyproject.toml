@@ -1,0 +1,25 @@
+[project]
+name = "openpi-policy-server"
+version = "0.1.0"
+description = "Generic openpi (PI-0/PI-0.5) websocket policy server"
+requires-python = ">=3.11,<3.12"
+dependencies = [
+    "openpi",
+]
+
+[project.scripts]
+openpi-server = "openpi_server:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+py-modules = ["openpi_server"]
+
+[tool.uv]
+prerelease = "allow"
+
+[tool.uv.sources]
+# Same openpi commit IsaacLab-Arena pins for its dockerized policy server.
+openpi = { git = "https://github.com/Physical-Intelligence/openpi.git", rev = "c23745b5ad24e98f66967ea795a07b2588ed6c79" }

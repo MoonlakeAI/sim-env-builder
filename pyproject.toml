@@ -1,0 +1,104 @@
+[project]
+name = "sim-env-builder"
+version = "0.1.0"
+description = "Preview policy rollouts on Moonlake-generated assets: Isaac Lab Arena tasks with articulation-derived milestones and PI-0.5 integration"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    # asset_checks reads USD through the pxr package that usd-exchange ships
+    # (transitively via isaaclab). Do NOT add usd-core: it installs into the
+    # same pxr/ directory and the two builds clobber each other.
+    "embreex>=2.17",
+    "gymnasium==1.2.0",
+    "isaaclab[all,isaacsim]==3.0.0b2.post1",
+    "json-numpy>=2.1,<3",
+    "msgpack>=1.0.5,<2",
+    "numpy>=2.0,<3",
+    "opencv-python-headless>=4.10,<5",
+    "openpi-client",
+    "packaging==26.0",
+    "requests>=2.32,<3",
+    "robust-laplacian>=1.1.0",
+    "rtree>=1.3",
+    "scikit-image>=0.24",
+    "torch==2.11.0",
+    "torchaudio==2.11.0",
+    "torchvision==0.26.0",
+    # asset_checks' rest-penetration check is sensitive to the trimesh major
+    # version; stay on the 4.x line that isaaclab/isaacsim-core resolve.
+    "trimesh>=4.11,<5",
+    "typing-extensions==4.12.2",
+    "websockets==16.1.1",
+]
+
+[project.scripts]
+sim-env-builder = "sim_env_builder.cli:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["sim_env_builder*"]
+
+[dependency-groups]
+arena = [
+    "isaaclab-arena",
+]
+dev = [
+    "pytest>=8.4,<9",
+    "ruff>=0.12,<0.13",
+]
+
+[tool.uv]
+default-groups = ["arena"]
+index-strategy = "unsafe-best-match"
+prerelease = "allow"
+# openpi-client pins numpy<2, but the Isaac Sim runtime requires numpy 2.x.
+# isaacsim-kernel pins websockets==12.0, but Arena's websocket policy client
+# needs >=14 (sync keepalive kwargs). IsaacLab-Arena uses these same
+# overrides and validates Isaac Sim 6.0 against websockets 16.1.1.
+override-dependencies = ["numpy>=2.0,<3", "websockets==16.1.1"]
+
+[tool.uv.sources]
+isaaclab = { index = "nvidia" }
+isaaclab-arena = { git = "https://github.com/isaac-sim/IsaacLab-Arena.git", rev = "4fbbefb2efbd3a7e31dccf1c3cc50e5a6867add9" }
+openpi-client = { git = "https://github.com/Physical-Intelligence/openpi.git", rev = "c23745b5ad24e98f66967ea795a07b2588ed6c79", subdirectory = "packages/openpi-client" }
+torch = { index = "pytorch-cu128" }
+torchaudio = { index = "pytorch-cu128" }
+torchvision = { index = "pytorch-cu128" }
+
+[[tool.uv.index]]
+name = "nvidia"
+url = "https://pypi.nvidia.com"
+
+[[tool.uv.index]]
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
+explicit = true
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+# policies/openpi is a separate uv project (py3.11/JAX); its server script
+# delays openpi imports past argparse on purpose, so PLC0415 doesn't apply.
+extend-exclude = ["policies"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "LOG", "PLC0415"]
+
+[tool.ruff.lint.isort]
+# factories/authoring are test-local helper modules under tests/asset_checks.
+known-first-party = ["sim_env_builder", "factories", "authoring"]
+
+[tool.ruff.lint.per-file-ignores]
+# Isaac/Arena imports must stay function-level: they may only run after the
+# SimulationApp starts (see arena_assets.py docstring).
+"src/sim_env_builder/{cli,rollout,environments,arena_assets,tracking}.py" = ["PLC0415"]
+# Runs under Blender's interpreter, not the project venv.
+"src/sim_env_builder/blender_preview.py" = ["E402"]
+# asset_checks keeps upstream quality_evals style; its lazy imports are
+# deliberate (bmesh exists only under Blender's interpreter).
+"src/sim_env_builder/asset_checks/**" = ["PLC0415"]
+"tests/asset_checks/**" = ["PLC0415"]

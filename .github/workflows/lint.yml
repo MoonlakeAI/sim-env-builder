@@ -1,0 +1,17 @@
+name: lint
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  ruff:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # Keep the version in sync with the ruff pin in pyproject.toml.
+      - uses: astral-sh/ruff-action@v3
+        with:
+          version: "0.12.12"
+          args: check .
