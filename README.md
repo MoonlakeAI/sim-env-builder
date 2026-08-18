@@ -223,9 +223,11 @@ uv run sim-env-builder check-asset assets/library/pill_bottle.usdz
 | `articulation` | joint graph shape, limits, transforms, skin weights |
 
 Per-check statuses and metrics land in
-`outputs/asset_checks/<asset>/report.json`. Add `--render preview` to also
-write assembled and exploded turntable stills through Blender for visual
-inspection.
+`outputs/asset_checks/<asset>/report.json`.
+
+Visual inspection of asset quality is just as important as quantitative metrics.
+Add `--render preview` to also write assembled and exploded turntables for viewing.
+Requires Blender accessible via your CLI to use.
 
 What's equally important is what's NOT included in these static checks:
 adherence to an articulation manifest, articulation and physics tests in
