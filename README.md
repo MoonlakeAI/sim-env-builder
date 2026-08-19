@@ -81,7 +81,7 @@ Optional:
 
 ```bash
 sudo apt install git-lfs && git lfs install
-git clone git@github.com:MoonlakeAI/sim-builder-poc.git
+git clone https://github.com/MoonlakeAI/sim-env-builder.git
 cd sim-builder-poc
 uv sync
 ```
